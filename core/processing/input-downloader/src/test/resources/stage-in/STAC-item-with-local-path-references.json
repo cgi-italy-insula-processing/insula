@@ -1,0 +1,95 @@
+{
+  "stac_version": "1.0.0",
+  "stac_extensions": [
+    "eo",
+    "proj",
+    "view"
+  ],
+  "type": "Feature",
+  "id": "S2B_53HPA_20210723_0_L2A",
+  "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+      [
+        [
+          136.11273785955869,
+          -36.22788818051635
+        ],
+        [
+          136.09905192261128,
+          -35.238096451039819
+        ],
+        [
+          137.30513468251898,
+          -35.22113204961173
+        ],
+        [
+          137.33381497932514,
+          -36.21029815477051
+        ],
+        [
+          136.11273785955869,
+          -36.22788818051635
+        ]
+      ]
+    ]
+  },
+  "properties": {
+    "datetime": "2021-07-23T00:57:07Z",
+    "platform": "sentinel-2b",
+    "constellation": "sentinel-2",
+    "gsd": 10
+  },
+  "bbox": [
+    136.09905192261128,
+    -36.22788818051635,
+    137.33381497932514,
+    -35.22113204961173
+  ],
+  "assets": {
+    "B02": {
+      "type": "image/tiff; profile=cloud-optimized; application=geotiff",
+      "roles": [
+        "data"
+      ],
+      "title": "Band 2 (blue)",
+      "href": "/data/inputDir/.+/B02/.+",
+      "gsd": 10,
+      "eo:bands": [
+        {
+          "name": "B02",
+          "common_name": "blue",
+          "center_wavelength": 0.4966,
+          "full_width_half_max": 0.098
+        }
+      ],
+      "proj:shape": [
+        10980,
+        10980
+      ],
+      "proj:transform": [
+        10,
+        0,
+        600000,
+        0,
+        -10,
+        6100000,
+        0,
+        0,
+        1
+      ],
+      "file:size": 206117177
+    }
+  },
+  "links": [
+    {
+      "type": "application/json",
+      "rel": "canonical",
+      "href": "https://sentinel-cogs.s3.us-west-2.amazonaws.com/sentinel-s2-l2a-cogs/53/H/PA/2021/7/S2B_53HPA_20210723_0_L2A/S2B_53HPA_20210723_0_L2A.json"
+    },
+    {
+      "rel": "parent",
+      "href": "../catalog.json"
+    }
+  ]
+}

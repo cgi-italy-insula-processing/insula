@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+package com.cgi.eoss.platform;
+
+option java_multiple_files = true;
+option java_package = "com.cgi.eoss.platform.rpc.worker";
+
+import "google/protobuf/timestamp.proto";
+
+message JobError {
+  string errorDescription = 1;
+}
+
+message JobEvent{
+  JobEventType jobEventType = 1;
+  google.protobuf.Timestamp timestamp = 3;
+  string jobEventPayload = 4;
+}
+
+enum JobEventType{
+  DATA_FETCHING_STARTED = 0;
+  DATA_FETCHING_COMPLETED = 1;
+  PROCESSING_STARTED = 2;
+  HEARTBEAT = 3;
+  PROCESSING_COMPLETED = 4;
+}

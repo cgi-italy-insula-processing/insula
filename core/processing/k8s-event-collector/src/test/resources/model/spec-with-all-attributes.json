@@ -1,0 +1,34 @@
+{
+  "entrypoint": "entrypoint",
+  "serviceAccountName": "serviceAccountName",
+  "volumeClaimTemplates": [
+    {
+      "metadata": {
+        "claimKey": "claimValue"
+      }
+    }
+  ],
+  "imagePullSecrets": [
+    {
+      "name": "imagePullSecret"
+    }
+  ],
+  "templates": [
+    {
+      "name": "template"
+    }
+  ],
+  "arguments": {
+    "parameters": [
+      {
+        "name": "name",
+        "value": "value"
+      }
+    ]
+  },
+  "volumes": [
+    {
+      "name": "volume"
+    }
+  ]
+}

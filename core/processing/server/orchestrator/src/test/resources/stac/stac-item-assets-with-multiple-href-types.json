@@ -1,0 +1,45 @@
+{
+  "type": "Feature",
+  "stac_version": "1.0.0",
+  "id": "featureID",
+  "geometry": null,
+  "properties": {
+    "datetime": "2026-09-24T00:00:00Z"
+  },
+  "links": [],
+  "assets": {
+    "relative-plain": {
+      "href": "relativePlain.tif"
+    },
+    "relative-parent": {
+      "href": "../relativeParent.tif"
+    },
+    "relative-encoded": {
+      "href": "dir/relative%20encoded.tif"
+    },
+    "relative-dir": {
+      "href": "dir/"
+    },
+    "relative-dot": {
+      "href": "."
+    },
+    "relative-dotdot": {
+      "href": ".."
+    },
+    "absolute-path": {
+      "href": "/absolutePath.tif"
+    },
+    "absolute-scheme": {
+      "href": "http://host/absoluteScheme.tif"
+    },
+    "network-path": {
+      "href": "//host/networkPath.tif"
+    },
+    "empty-path": {
+      "href": "?v=2"
+    },
+    "empty-href": {
+      "href": ""
+    }
+  }
+}

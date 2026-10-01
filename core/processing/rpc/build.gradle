@@ -1,0 +1,84 @@
+buildscript {
+    dependencies {
+        classpath pl.protobuf
+    }
+}
+
+group 'com.cgi.eoss.platform.core'
+version '1.47.1-SNAPSHOT'
+
+apply plugin: 'java'
+apply plugin: 'java-library'
+apply plugin: 'jacoco'
+apply plugin: 'com.google.protobuf'
+
+jar {
+    archiveBaseName = 'rpc-core'
+}
+
+sourceSets {
+    main {
+        java {
+            srcDirs += 'target/generated/source/proto/main/grpc'
+            srcDirs += 'target/generated/source/proto/main/java'
+        }
+    }
+}
+
+protobuf {
+    protoc {
+        artifact = 'com.google.protobuf:protoc:3.16.1'
+    }
+    plugins {
+        grpc {
+            artifact = 'io.grpc:protoc-gen-grpc-java:1.32.2'
+        }
+    }
+    generateProtoTasks {
+        all()*.plugins {
+            grpc {
+                // To generate deprecated interfaces and static bindService method,
+                // turn the enable_deprecated option to true below:
+                option 'enable_deprecated=false'
+            }
+        }
+    }
+}
+
+dependencies {
+
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+
+    api 'com.google.guava:guava'
+    api 'io.grpc:grpc-protobuf'
+
+    testImplementation 'junit:junit'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+    testCompileOnly 'org.projectlombok:lombok'
+    testAnnotationProcessor('org.projectlombok:lombok')
+}
+
+sonarqube {
+    properties {
+        property "sonar.exclusions", "target/generated/**/*"
+    }
+}
+
+jacoco {
+    toolVersion = "0.8.9"
+    reportsDir = file("$buildDir/jacoco")
+}
+
+jacocoTestReport {
+    dependsOn test
+    reports {
+      xml.enabled true
+      csv.enabled false
+    }
+}
+
+test {
+    finalizedBy jacocoTestReport
+}

@@ -1,0 +1,61 @@
+{
+    "name": "service-1",
+    "type": "PROCESSOR",
+    "dockerTag": "platform/dockertag",
+    "status": "IN_DEVELOPMENT",
+    "serviceDescriptor": {
+        "id": "service-1",
+        "title": "service-1",
+        "dataInputs": [
+            {
+                "id": "in",
+                "title": "in",
+                "minOccurs": 1,
+                "maxOccurs": 100,
+                "data": "LITERAL",
+                "defaultAttrs": {
+                    "dataType": "string"
+                },
+                "platformMetadata": {
+                    "format": "CATALOGUE"
+                },
+                "subsetting": {
+                    "aoiInputRef": "aoi",
+                    "format": "TIF"
+                }
+            },
+            {
+                "id": "aoi",
+                "platformMetadata": {
+                    "format": "AOI"
+                }
+            }
+        ],
+        "dataOutputs": [
+            {
+                "id": "out",
+                "title": "out",
+                "minOccurs": 1,
+                "maxOccurs": 1,
+                "data": "LITERAL",
+                "defaultAttrs": {
+                    "dataType": "string"
+                },
+                "platformMetadata": {
+                    "format": "OTHER",
+                    "type": "OTHER"
+                }
+            }
+        ]
+    },
+    "cwl": "http://localhost/cwl/dup-input-id.cwl",
+    "requiredResources": {
+        "storage": "1",
+        "gpus": "2",
+        "cpus": "3",
+        "ram": "4Gi",
+        "sharedMemory" : {
+            "size": "5Mi"
+        }
+    }
+}

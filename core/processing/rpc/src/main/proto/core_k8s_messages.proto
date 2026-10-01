@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+package com.cgi.eoss.platform;
+
+import "google/protobuf/timestamp.proto";
+
+option java_multiple_files = true;
+option java_package = "com.cgi.eoss.platform.rpc";
+
+
+message K8SEvent{
+	K8SEventType eventType = 1;
+	string jobId = 2;
+	string intJobId =3;
+	string resourceStatus = 4;
+	google.protobuf.Timestamp timestamp = 5;
+}
+
+enum K8SEventType{
+	K8S_APP_POD_COMPLETED = 0;
+	K8S_WORKFLOW_COMPLETED = 1;
+	K8S_APP_POD_RUNNING = 2;
+	K8S_WORKFLOW_RUNNING = 3;
+	K8S_APP_POD_FAILED = 4;
+	K8S_WORKFLOW_FAILED = 5;
+	K8S_APP_POD_OUTPUT_COMPLETED = 6;
+	K8S_APP_POD_OUTPUT_FAILED = 7;
+	K8S_APP_POD_DELETED = 8;
+	K8S_WORKFLOW_DELETED = 9;
+}

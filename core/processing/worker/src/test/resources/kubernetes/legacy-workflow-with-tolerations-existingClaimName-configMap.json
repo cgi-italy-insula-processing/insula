@@ -1,0 +1,277 @@
+{
+    "apiVersion": "argoproj.io/v1alpha1",
+    "kind": "Workflow",
+    "metadata": {
+        "labels": {
+            "platform/jobid": "theJobId",
+            "platform/workflow-type": "job",
+            "platform/intjobid": "30"
+        },
+        "generateName": "workflow-"
+    },
+    "spec": {
+        "entrypoint": "workflowTemplate",
+        "volumeClaimTemplates": [],
+        "imagePullSecrets": [
+            {
+                "name": "externalRegistryImagePullSecretName"
+            },
+            {
+                "name": "internalPlatformRegistryImagePullSecretName"
+            }
+        ],
+        "templates": [
+            {
+                "name": "workflowTemplate",
+                "steps": [
+                    [
+                        {
+                            "name": "input",
+                            "template": "input",
+                            "arguments": {
+                                "parameters": [
+                                    {
+                                        "name": "input-inputs",
+                                        "value": "{\"ParamB\":{\"type\":\"URL\",\"values\":[\"ParamBValue1\"],\"subsetting\":null},\"ParamA\":{\"type\":\"OTHER\",\"values\":[\"ParamAValue1\"],\"subsetting\":{\"aoi\":\"aoi\",\"format\":\"format\"}}}"
+                                    },
+                                    {
+                                        "name": "input-basepath",
+                                        "value": "/home/worker/workDir"
+                                    },
+                                    {
+                                        "name": "input-jobId",
+                                        "value": "theJobId"
+                                    }
+                                ]
+                            }
+                        }
+                    ],
+                    [
+                        {
+                            "name": "processing",
+                            "template": "processing"
+                        }
+                    ],
+                    [
+                        {
+                            "name": "output",
+                            "template": "output",
+                            "arguments": {
+                                "parameters": [
+                                    {
+                                        "name": "output-basepath",
+                                        "value": "/home/worker/workDir/outDir"
+                                    },
+                                    {
+                                        "name": "output-jobId",
+                                        "value": "theJobId"
+                                    },
+                                    {
+                                        "name": "output-internal-jobId",
+                                        "value": "30"
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                ]
+            },
+            {
+                "name": "input",
+                "container": {
+                    "image": "inputDownloaderImageName",
+                    "command": [],
+                    "args": [],
+                    "volumeMounts": [
+                        {
+                            "name": "workerhome",
+                            "mountPath": "/home/worker/workDir"
+                        }
+                    ],
+                    "env": [
+                        {
+                            "name": "BASE_PATH",
+                            "value": "{{inputs.parameters.input-basepath}}"
+                        },
+                        {
+                            "name": "INPUTS",
+                            "value": "{{inputs.parameters.input-inputs}}"
+                        },
+                        {
+                            "name": "JOB_ID",
+                            "value": "{{inputs.parameters.input-jobId}}"
+                        },
+                        {
+                            "name": "JOB_OWNER",
+                            "value": "theJobOwner"
+                        },
+                        {
+                            "name": "SPRING_APPLICATION_NAME",
+                            "value": "inputdownloader"
+                        },
+                        {
+                            "name": "TEMPFOLDER",
+                            "value": "{{inputs.parameters.input-basepath}}/tmp"
+                        },
+                        {
+                            "name": "lg_indw_name_0",
+                            "valueFrom": {
+                                "secretKeyRef": {
+                                    "name": "lg_indw_secret_name_0",
+                                    "key": "lg_indw_secret_key_0"
+                                }
+                            }
+                        },
+                        {
+                            "name": "lg_indw_name_1",
+                            "valueFrom": {
+                                "secretKeyRef": {
+                                    "name": "lg_indw_secret_name_1",
+                                    "key": "lg_indw_secret_key_1"
+                                }
+                            }
+                        }
+                    ]
+                },
+                "metadata": {
+                    "annotations": {},
+                    "labels": {
+                        "platform/jobid": "theJobId",
+                        "platform/workflow-step": "input-download",
+                        "platform/intjobid": "30"
+                    }
+                },
+                "inputs": {
+                    "parameters": [
+                        {
+                            "name": "input-basepath"
+                        },
+                        {
+                            "name": "input-inputs"
+                        },
+                        {
+                            "name": "input-jobId"
+                        }
+                    ]
+                }
+            },
+            {
+                "name": "processing",
+                "container": {
+                    "image": "internalPlatformRegistryPrefix/test:1.1",
+                    "command": [],
+                    "workingDir": "/home/worker/workDir",
+                    "args": [],
+                    "volumeMounts": [
+                        {
+                            "name": "workerhome",
+                            "mountPath": "/home/worker/workDir"
+                        }
+                    ],
+                    "env": [
+                        {
+                            "name": "KEY1",
+                            "value": "VALUE1"
+                        },
+                        {
+                            "name": "lg_pr_name_0",
+                            "valueFrom": {
+                                "secretKeyRef": {
+                                    "name": "lg_pr_secret_name_0",
+                                    "key": "lg_pr_secret_key_0"
+                                }
+                            }
+                        }
+                    ]
+                },
+                "metadata": {
+                    "annotations": {},
+                    "labels": {
+                        "platform/jobid": "theJobId",
+                        "platform/workflow-step": "processing",
+                        "platform/intjobid": "30"
+                    }
+                }
+            },
+            {
+                "name": "output",
+                "container": {
+                    "image": "outputUploaderImageName",
+                    "command": [],
+                    "args": [],
+                    "volumeMounts": [
+                        {
+                            "name": "workerhome",
+                            "mountPath": "/home/worker/workDir"
+                        },
+                        {
+                            "name": "output-uploader-config-map-volume",
+                            "mountPath": "/config"
+                        }
+                    ],
+                    "env": [
+                        {
+                            "name": "BASE_PATH",
+                            "value": "{{inputs.parameters.output-basepath}}"
+                        },
+                        {
+                            "name": "JOB_ID",
+                            "value": "{{inputs.parameters.output-jobId}}"
+                        },
+                        {
+                            "name": "SPRING_APPLICATION_NAME",
+                            "value": "outputuploader"
+                        },
+                        {
+                            "name": "SPRING_CONFIG_ADDITIONAL_LOCATION",
+                            "value": "optional:file:/config/"
+                        },
+                        {
+                            "name": "lg_op_name_0",
+                            "valueFrom": {
+                                "secretKeyRef": {
+                                    "name": "lg_op_secret_name_0",
+                                    "key": "lg_op_secret_key_0"
+                                }
+                            }
+                        }
+                    ]
+                },
+                "metadata": {
+                    "annotations": {},
+                    "labels": {
+                        "platform/jobid": "theJobId",
+                        "platform/workflow-step": "output-upload"
+                    }
+                },
+                "inputs": {
+                    "parameters": [
+                        {
+                            "name": "output-basepath"
+                        },
+                        {
+                            "name": "output-jobId"
+                        },
+                        {
+                            "name": "output-internal-jobId"
+                        }
+                    ]
+                }
+            }
+        ],
+        "volumes": [
+            {
+                "name": "workerhome",
+                "persistentVolumeClaim": {
+                    "claimName": "persistentvolumeclaim1"
+                }
+            },
+            {
+                "name": "output-uploader-config-map-volume",
+                "configMap": {
+                    "name": "outputUploaderConfigMapName"
+                }
+            }
+        ]
+    }
+}

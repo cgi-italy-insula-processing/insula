@@ -1,0 +1,21 @@
+{
+  "id": ".+",
+  "type": "Catalog",
+  "stac_version": "1.0.0",
+  "description": "Root catalog for input .+",
+  "links": [
+    {
+      "rel": "item",
+      "type": "application/geo+json",
+      "title": "S2B_53HPA_20210723_0_L2A_3",
+      "href": "/data/stageIn/.+/S2B_53HPA_20210723_0_L2A_3.json"
+    },
+    {
+      "rel": "item",
+      "type": "application/geo+json",
+      "title": "S2B_53HPA_20210723_0_L2A_2",
+      "href": "/data/stageIn/.+/S2B_53HPA_20210723_0_L2A_2.json"
+    }
+
+  ]
+}

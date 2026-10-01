@@ -1,0 +1,46 @@
+syntax = "proto3";
+
+package com.cgi.eoss.platform;
+
+option java_multiple_files = true;
+option java_package = "com.cgi.eoss.platform.rpc";
+option java_outer_classname = "CoreMessages";
+
+message Service {
+  string id = 1;
+  string name = 2;
+  string dockerImageTag = 3;
+  int64 groupId = 4;
+  string descriptorType = 5;
+}
+
+message Job {
+  string id = 1;
+  string intJobId = 2;
+  string userId = 3;
+  string serviceId = 4;
+  optional string userUUID = 5;
+}
+
+message JobParam {
+  string paramName = 1;
+  repeated string paramValue = 2;
+  string type = 3;
+  optional InputBinding inputBinding = 4;
+  optional OutputBinding outputBinding = 5;
+  optional Subsetting subsetting = 6;
+}
+
+message InputBinding {
+  int32 position = 1;
+  optional string prefix = 2;
+}
+
+message OutputBinding {
+  string glob = 1;
+}
+
+message Subsetting {
+  string aoi = 1;
+  string format = 2;
+}

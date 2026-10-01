@@ -1,0 +1,11 @@
+{
+  "id": "test-item",
+  "assets": {
+    "test-1": {
+      "href": "test-file-1.txt"
+    },
+    "test-2": {
+      "href": "test-file-2.txt"
+    }
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "id": "stage-out-catalog",
+  "type": "catalog",
+  "stac_version": "1.0.0",
+  "description": "Root catalog for stage out test",
+  "links": [
+    {
+      "rel": "root",
+      "href": "./catalog.json",
+      "type": "application/json"
+    },
+    {
+      "rel": "item",
+      "type": "application/geo+json",
+      "title": "test-item-1-title",
+      "href": "item.json"
+    },
+    {
+      "rel": "item",
+      "type": "application/geo+json",
+      "title": "test-item-2-title",
+      "href": "item2.json"
+    }
+  ]
+}

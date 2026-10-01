@@ -1,0 +1,493 @@
+{
+    "apiVersion": "argoproj.io/v1alpha1",
+    "items": [
+        {
+            "apiVersion": "argoproj.io/v1alpha1",
+            "kind": "Workflow",
+            "metadata": {
+                "annotations": {
+                    "workflows.argoproj.io/pod-name-format": "v2"
+                },
+                "creationTimestamp": "2023-05-17T11:20:19Z",
+                "generateName": "workflow-",
+                "generation": 6.0,
+                "labels": {
+                    "platform/intjobid": "20",
+                    "platform/jobid": "5a940ac4-b9f7-4f92-8935-d2892cc32033",
+                    "platform/workflow-type": "job",
+                    "workflows.argoproj.io/completed": "true",
+                    "workflows.argoproj.io/phase": "Succeeded"
+                },
+                "managedFields": [
+                    {
+                        "apiVersion": "argoproj.io/v1alpha1",
+                        "fieldsType": "FieldsV1",
+                        "fieldsV1": {
+                            "f:metadata": {
+                                "f:generateName": {},
+                                "f:labels": {
+                                    ".": {},
+                                    "f:platform/intjobid": {},
+                                    "f:platform/jobid": {},
+                                    "f:platform/workflow-type": {}
+                                }
+                            }
+                        },
+                        "manager": "Swagger-Codegen",
+                        "operation": "Update",
+                        "time": "2023-05-17T11:20:19Z"
+                    },
+                    {
+                        "apiVersion": "argoproj.io/v1alpha1",
+                        "fieldsType": "FieldsV1",
+                        "fieldsV1": {
+                            "f:metadata": {
+                                "f:annotations": {
+                                    ".": {},
+                                    "f:workflows.argoproj.io/pod-name-format": {}
+                                },
+                                "f:labels": {
+                                    "f:workflows.argoproj.io/completed": {},
+                                    "f:workflows.argoproj.io/phase": {}
+                                }
+                            },
+                            "f:spec": {},
+                            "f:status": {}
+                        },
+                        "manager": "workflow-controller",
+                        "operation": "Update",
+                        "time": "2023-05-17T11:20:59Z"
+                    }
+                ],
+                "name": "workflow-cdb67",
+                "namespace": "eopaas-workflows",
+                "resourceVersion": "151789",
+                "uid": "4ef75e2e-617a-4e38-a74a-4149145111d9"
+            },
+            "spec": {
+                "arguments": {},
+                "entrypoint": "workflowTemplate",
+                "imagePullSecrets": [
+                    {
+                        "name": "cgi-harbor"
+                    },
+                    {
+                        "name": "platform-harbor"
+                    }
+                ],
+                "templates": [
+                    {
+                        "inputs": {},
+                        "metadata": {},
+                        "name": "workflowTemplate",
+                        "outputs": {},
+                        "steps": [
+                            [
+                                {
+                                    "arguments": {
+                                        "parameters": [
+                                            {
+                                                "name": "input-inputs",
+                                                "value": "{\"input\":[\"patacco\"],\"collection\":[\"{\\\"result\\\":\\\"eopaasac7e2a0cca384f1ab657df6e98d973db\\\"}\"]}"
+                                            },
+                                            {
+                                                "name": "input-basepath",
+                                                "value": "/home/worker/workDir"
+                                            },
+                                            {
+                                                "name": "input-jobId",
+                                                "value": "5a940ac4-b9f7-4f92-8935-d2892cc32033"
+                                            }
+                                        ]
+                                    },
+                                    "name": "input",
+                                    "template": "input"
+                                }
+                            ],
+                            [
+                                {
+                                    "arguments": {},
+                                    "name": "processing",
+                                    "template": "processing"
+                                }
+                            ],
+                            [
+                                {
+                                    "arguments": {
+                                        "parameters": [
+                                            {
+                                                "name": "output-basepath",
+                                                "value": "/home/worker/workDir/outDir"
+                                            },
+                                            {
+                                                "name": "output-jobId",
+                                                "value": "5a940ac4-b9f7-4f92-8935-d2892cc32033"
+                                            },
+                                            {
+                                                "name": "output-internal-jobId",
+                                                "value": "20"
+                                            }
+                                        ]
+                                    },
+                                    "name": "output",
+                                    "template": "output"
+                                }
+                            ]
+                        ]
+                    },
+                    {
+                        "container": {
+                            "env": [
+                                {
+                                    "name": "BASE_PATH",
+                                    "value": "{{inputs.parameters.input-basepath}}"
+                                },
+                                {
+                                    "name": "INPUTS",
+                                    "value": "{{inputs.parameters.input-inputs}}"
+                                },
+                                {
+                                    "name": "JOB_ID",
+                                    "value": "{{inputs.parameters.input-jobId}}"
+                                },
+                                {
+                                    "name": "SPRING_APPLICATION_NAME",
+                                    "value": "inputdownloader"
+                                },
+                                {
+                                    "name": "TEMPFOLDER",
+                                    "value": "{{inputs.parameters.input-basepath}}/tmp"
+                                }
+                            ],
+                            "image": "core.harbor.dev.eoss-cloud.it/com.cgi.eoss.platform/input-downloader:1.23.1-SNAPSHOT",
+                            "name": "",
+                            "resources": {},
+                            "volumeMounts": [
+                                {
+                                    "mountPath": "/home/worker/workDir",
+                                    "name": "workerhome"
+                                }
+                            ]
+                        },
+                        "inputs": {
+                            "parameters": [
+                                {
+                                    "name": "input-basepath"
+                                },
+                                {
+                                    "name": "input-inputs"
+                                },
+                                {
+                                    "name": "input-jobId"
+                                }
+                            ]
+                        },
+                        "metadata": {},
+                        "name": "input",
+                        "outputs": {}
+                    },
+                    {
+                        "container": {
+                            "image": "10.107.120.113/eopaas/test",
+                            "name": "",
+                            "resources": {},
+                            "volumeMounts": [
+                                {
+                                    "mountPath": "/home/worker/workDir",
+                                    "name": "workerhome"
+                                }
+                            ]
+                        },
+                        "inputs": {},
+                        "metadata": {
+                            "labels": {
+                                "platform/jobid": "5a940ac4-b9f7-4f92-8935-d2892cc32033"
+                            }
+                        },
+                        "name": "processing",
+                        "outputs": {}
+                    },
+                    {
+                        "container": {
+                            "env": [
+                                {
+                                    "name": "BASE_PATH",
+                                    "value": "{{inputs.parameters.output-basepath}}"
+                                },
+                                {
+                                    "name": "JOB_ID",
+                                    "value": "{{inputs.parameters.output-jobId}}"
+                                },
+                                {
+                                    "name": "INTERNAL_JOB_ID",
+                                    "value": "{{inputs.parameters.output-internal-jobId}}"
+                                },
+                                {
+                                    "name": "SPRING_APPLICATION_NAME",
+                                    "value": "outputuploader"
+                                },
+                                {
+                                    "name": "TEMPFOLDER",
+                                    "value": "{{inputs.parameters.output-basepath}}/tmp"
+                                }
+                            ],
+                            "image": "core.harbor.dev.eoss-cloud.it/com.cgi.eoss.platform/output-uploader:1.23.1-SNAPSHOT",
+                            "name": "",
+                            "resources": {},
+                            "volumeMounts": [
+                                {
+                                    "mountPath": "/home/worker/workDir",
+                                    "name": "workerhome"
+                                }
+                            ]
+                        },
+                        "inputs": {
+                            "parameters": [
+                                {
+                                    "name": "output-basepath"
+                                },
+                                {
+                                    "name": "output-jobId"
+                                },
+                                {
+                                    "name": "output-internal-jobId"
+                                }
+                            ]
+                        },
+                        "metadata": {},
+                        "name": "output",
+                        "outputs": {}
+                    }
+                ],
+                "volumes": [
+                    {
+                        "name": "workerhome",
+                        "persistentVolumeClaim": {
+                            "claimName": "workflow-pvc-hwz69"
+                        }
+                    },
+                    {
+                        "name": "user-mounts",
+                        "persistentVolumeClaim": {
+                            "claimName": "user-mounts-pvc"
+                        }
+                    }
+                ]
+            },
+            "status": {
+                "artifactGCStatus": {
+                    "notSpecified": true
+                },
+                "artifactRepositoryRef": {
+                    "artifactRepository": {},
+                    "default": true
+                },
+                "conditions": [
+                    {
+                        "status": "False",
+                        "type": "PodRunning"
+                    },
+                    {
+                        "status": "True",
+                        "type": "Completed"
+                    }
+                ],
+                "finishedAt": "2023-05-17T11:20:59Z",
+                "nodes": {
+                    "workflow-cdb67": {
+                        "children": [
+                            "workflow-cdb67-204787721"
+                        ],
+                        "displayName": "workflow-cdb67",
+                        "finishedAt": "2023-05-17T11:20:59Z",
+                        "id": "workflow-cdb67",
+                        "name": "workflow-cdb67",
+                        "outboundNodes": [
+                            "workflow-cdb67-3340913454"
+                        ],
+                        "phase": "Succeeded",
+                        "progress": "3/3",
+                        "resourcesDuration": {
+                            "cpu": 49.0,
+                            "memory": 49.0
+                        },
+                        "startedAt": "2023-05-17T11:20:19Z",
+                        "templateName": "workflowTemplate",
+                        "templateScope": "local/workflow-cdb67",
+                        "type": "Steps"
+                    },
+                    "workflow-cdb67-204787721": {
+                        "boundaryID": "workflow-cdb67",
+                        "children": [
+                            "workflow-cdb67-230764443"
+                        ],
+                        "displayName": "[0]",
+                        "finishedAt": "2023-05-17T11:20:29Z",
+                        "id": "workflow-cdb67-204787721",
+                        "name": "workflow-cdb67[0]",
+                        "phase": "Succeeded",
+                        "progress": "3/3",
+                        "resourcesDuration": {
+                            "cpu": 49.0,
+                            "memory": 49.0
+                        },
+                        "startedAt": "2023-05-17T11:20:19Z",
+                        "templateScope": "local/workflow-cdb67",
+                        "type": "StepGroup"
+                    },
+                    "workflow-cdb67-230764443": {
+                        "boundaryID": "workflow-cdb67",
+                        "children": [
+                            "workflow-cdb67-3359024020"
+                        ],
+                        "displayName": "input",
+                        "finishedAt": "2023-05-17T11:20:25Z",
+                        "hostNodeName": "minikube",
+                        "id": "workflow-cdb67-230764443",
+                        "inputs": {
+                            "parameters": [
+                                {
+                                    "name": "input-basepath",
+                                    "value": "/home/worker/workDir"
+                                },
+                                {
+                                    "name": "input-inputs",
+                                    "value": "{\"input\":[\"patacco\"],\"collection\":[\"{\\\"result\\\":\\\"eopaasac7e2a0cca384f1ab657df6e98d973db\\\"}\"]}"
+                                },
+                                {
+                                    "name": "input-jobId",
+                                    "value": "5a940ac4-b9f7-4f92-8935-d2892cc32033"
+                                }
+                            ]
+                        },
+                        "name": "workflow-cdb67[0].input",
+                        "outputs": {
+                            "exitCode": "0"
+                        },
+                        "phase": "Succeeded",
+                        "progress": "1/1",
+                        "resourcesDuration": {
+                            "cpu": 7.0,
+                            "memory": 7.0
+                        },
+                        "startedAt": "2023-05-17T11:20:19Z",
+                        "templateName": "input",
+                        "templateScope": "local/workflow-cdb67",
+                        "type": "Pod"
+                    },
+                    "workflow-cdb67-3340913454": {
+                        "boundaryID": "workflow-cdb67",
+                        "displayName": "output",
+                        "finishedAt": "2023-05-17T11:20:58Z",
+                        "hostNodeName": "minikube",
+                        "id": "workflow-cdb67-3340913454",
+                        "inputs": {
+                            "parameters": [
+                                {
+                                    "name": "output-basepath",
+                                    "value": "/home/worker/workDir/outDir"
+                                },
+                                {
+                                    "name": "output-jobId",
+                                    "value": "5a940ac4-b9f7-4f92-8935-d2892cc32033"
+                                },
+                                {
+                                    "name": "output-internal-jobId",
+                                    "value": "20"
+                                }
+                            ]
+                        },
+                        "name": "workflow-cdb67[2].output",
+                        "outputs": {
+                            "exitCode": "0"
+                        },
+                        "phase": "Succeeded",
+                        "progress": "1/1",
+                        "resourcesDuration": {
+                            "cpu": 33.0,
+                            "memory": 33.0
+                        },
+                        "startedAt": "2023-05-17T11:20:39Z",
+                        "templateName": "output",
+                        "templateScope": "local/workflow-cdb67",
+                        "type": "Pod"
+                    },
+                    "workflow-cdb67-3358582735": {
+                        "boundaryID": "workflow-cdb67",
+                        "children": [
+                            "workflow-cdb67-3340913454"
+                        ],
+                        "displayName": "[2]",
+                        "finishedAt": "2023-05-17T11:20:59Z",
+                        "id": "workflow-cdb67-3358582735",
+                        "name": "workflow-cdb67[2]",
+                        "phase": "Succeeded",
+                        "progress": "1/1",
+                        "resourcesDuration": {
+                            "cpu": 33.0,
+                            "memory": 33.0
+                        },
+                        "startedAt": "2023-05-17T11:20:39Z",
+                        "templateScope": "local/workflow-cdb67",
+                        "type": "StepGroup"
+                    },
+                    "workflow-cdb67-3359024020": {
+                        "boundaryID": "workflow-cdb67",
+                        "children": [
+                            "workflow-cdb67-3826520501"
+                        ],
+                        "displayName": "[1]",
+                        "finishedAt": "2023-05-17T11:20:39Z",
+                        "id": "workflow-cdb67-3359024020",
+                        "name": "workflow-cdb67[1]",
+                        "phase": "Succeeded",
+                        "progress": "2/2",
+                        "resourcesDuration": {
+                            "cpu": 42.0,
+                            "memory": 42.0
+                        },
+                        "startedAt": "2023-05-17T11:20:29Z",
+                        "templateScope": "local/workflow-cdb67",
+                        "type": "StepGroup"
+                    },
+                    "workflow-cdb67-3826520501": {
+                        "boundaryID": "workflow-cdb67",
+                        "children": [
+                            "workflow-cdb67-3358582735"
+                        ],
+                        "displayName": "processing",
+                        "finishedAt": "2023-05-17T11:20:36Z",
+                        "hostNodeName": "minikube",
+                        "id": "workflow-cdb67-3826520501",
+                        "name": "workflow-cdb67[1].processing",
+                        "outputs": {
+                            "exitCode": "0"
+                        },
+                        "phase": "Succeeded",
+                        "progress": "1/1",
+                        "resourcesDuration": {
+                            "cpu": 9.0,
+                            "memory": 9.0
+                        },
+                        "startedAt": "2023-05-17T11:20:29Z",
+                        "templateName": "processing",
+                        "templateScope": "local/workflow-cdb67",
+                        "type": "Pod"
+                    }
+                },
+                "phase": "Succeeded",
+                "progress": "3/3",
+                "resourcesDuration": {
+                    "cpu": 49.0,
+                    "memory": 49.0
+                },
+                "startedAt": "2023-05-17T11:20:19Z"
+            }
+        }
+    ],
+    "kind": "WorkflowList",
+    "metadata": {
+        "continue": "",
+        "resourceVersion": "151793"
+    }
+}

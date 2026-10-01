@@ -1,0 +1,6 @@
+rootProject.name = 'platform'
+
+apply from: file('core-settings.gradle')
+
+def extraGradleSettings = file('extra-settings.gradle')
+if (extraGradleSettings.exists()) apply from: extraGradleSettings

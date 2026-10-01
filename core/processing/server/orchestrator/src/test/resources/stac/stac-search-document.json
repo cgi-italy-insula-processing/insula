@@ -1,0 +1,106 @@
+{
+  "features": [
+    {
+      "bbox": [
+        10.0,
+        20.0,
+        30.0,
+        40.0
+      ],
+      "properties": {
+        "proj:centroid": {
+          "coordinates": [
+            110.138561062,
+            -7.81237897
+          ]
+        },
+        "title": "bob_SampleGeotiff-1.tif",
+        "insula:platformFileType": "REFERENCE_DATA",
+        "license": "unlicensed",
+        "datetime": "2024-11-26T12:25:15Z/2024-11-26T12:35:15Z",
+        "eo:snow_cover": 0,
+        "raster:spatial_resolution": 0,
+        "insula:filename": "SampleGeotiff-1.tif",
+        "insula:productIdentifier": "bob_SampleGeotiff-1.tif",
+        "eo:cloud_cover": 0,
+        "insula:owner": "bob",
+        "insula:platformparam": "{\"collection\": \"eopaase93865f432fe4edfbac2ba42391170d1\"}",
+        "sat:absolute_orbit": 0,
+        "file:size": 1574844,
+        "insula:collection": "eopaase93865f432fe4edfbac2ba42391170d1"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              10.0,
+              10.0
+            ],
+            [
+              20.0,
+              20.0
+            ],
+            [
+              30.0,
+              30.0
+            ],
+            [
+              40.0,
+              40.0
+            ]
+          ]
+        ]
+      },
+      "assets": {
+        "internal": {
+          "href": "eopaas://refData/11/SampleGeotiff-1.tif",
+          "title": "bob_SampleGeotiff-1.tif",
+          "type": "application/octet-stream",
+          "roles": [
+            "data"
+          ],
+          "description": "Downloadable for asset 9106a7fe-9d4c-5673-9979-0de28035ea7f",
+          "file:size": 1574844
+        }
+      },
+      "links": [],
+      "id": "9106a7fe-9d4c-5673-9979-0de28035ea7f",
+      "type": "Feature",
+      "stac_version": "1.0.0",
+      "stac_extensions": [
+        "https://stac-extensions.github.io/file/v2.1.0/schema.json",
+        "https://stac-extensions.github.io/sar/v1.0.0/schema.json",
+        "https://stac-extensions.github.io/projection/v1.1.0/schema.json",
+        "https://stac-extensions.github.io/sat/v1.0.0/schema.json",
+        "https://stac-extensions.github.io/eo/v1.1.0/schema.json",
+        "https://stac-extensions.github.io/view/v1.0.0/schema.json",
+        "https://stac-extensions.github.io/product/v0.1.0/schema.json",
+        "https://stac-extensions.github.io/processing/v1.2.0/schema.json",
+        "https://stac-extensions.github.io/authentication/v1.1.0/schema.json",
+        "https://stac-extensions.github.io/raster/v2.0.0/schema.json",
+        "https://cgi-italy.github.io/insula/schemas/v1.2.0/stac/insula-stac-extension.schema.json"
+      ]
+    }
+  ],
+  "numberReturned": 1,
+  "type": "FeatureCollection",
+  "numberMatched": 1,
+  "links": [
+    {
+      "title": "next",
+      "rel": "next",
+      "href": "nextHref"
+    },
+    {
+      "title": "first",
+      "rel": "first",
+      "href": "firstHref"
+    },
+    {
+      "title": "last",
+      "rel": "last",
+      "href": "lastHref"
+    }
+  ]
+}

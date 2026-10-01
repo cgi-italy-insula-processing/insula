@@ -1,0 +1,352 @@
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+
+group 'com.cgi.eoss.platform'
+version '1.47.1-SNAPSHOT'
+
+// This pattern allows us to override the URLs from init.gradle or gradle.properties
+ext.mavenCentralUrl = project.hasProperty('mavenCentralUrl') ? mavenCentralUrl : 'https://jcenter.bintray.com'
+ext.mavenGeosolutionsUrl = project.hasProperty('mavenGeosolutionsUrl') ? mavenGeosolutionsUrl : 'https://maven.geo-solutions.it'
+ext.mavenOsgeoUrl = project.hasProperty('mavenOsgeoUrl') ? mavenOsgeoUrl : 'https://repo.osgeo.org/repository/release/'
+ext.npmUrl = project.hasProperty('npmUrl') ? npmUrl : 'https://registry.npmjs.org'
+ext.gradlePluginPortalUrl = project.hasProperty('gradlePluginPortalUrl') ? gradlePluginPortalUrl : 'https://plugins.gradle.org/m2'
+
+allprojects {
+    buildscript {
+        repositories {
+            maven { url gradlePluginPortalUrl }
+        }
+    }
+
+    repositories {
+        maven { url mavenCentralUrl }
+        maven { url mavenGeosolutionsUrl }
+        maven { url mavenOsgeoUrl }
+        flatDir {
+            dirs "$rootDir/core/cwl-model"
+        }
+    }
+
+    buildDir = 'target'
+
+    plugins.withType(JavaPlugin) {
+        sourceCompatibility = 1.8
+    }
+
+    tasks.withType(JavaCompile) {
+        options.incremental = true
+    }
+
+    apply plugin: 'io.spring.dependency-management'
+    dependencyManagement {
+        imports {
+            mavenBom 'org.springframework:spring-framework-bom:5.3.36'
+            mavenBom 'org.springframework.cloud:spring-cloud-dependencies:2021.0.8'
+            mavenBom 'org.springframework.data:spring-data-bom:2021.2.18'
+            mavenBom 'org.springframework.security:spring-security-bom:5.7.12'
+            mavenBom 'com.amazonaws:aws-java-sdk-bom:1.12.739'
+        }
+
+        dependencies {
+
+            dependency 'commons-io:commons-io:2.15.1'
+            dependency 'com.fasterxml.jackson.core:jackson-annotations:2.21'
+            dependencySet(group: 'com.fasterxml.jackson.core', version: '2.21.6') {
+                entry 'jackson-core'
+                entry 'jackson-databind'
+            }
+            dependencySet(group: 'com.fasterxml.jackson.dataformat', version: '2.21.6') {
+                entry 'jackson-dataformat-csv'
+                entry 'jackson-dataformat-xml'
+                entry 'jackson-dataformat-yaml'
+            }
+            dependencySet(group: 'com.fasterxml.jackson.datatype', version: '2.21.6') {
+                entry 'jackson-datatype-guava'
+                entry 'jackson-datatype-hibernate5'
+                entry 'jackson-datatype-jdk8'
+                entry 'jackson-datatype-jsr310'
+            }
+            dependencySet(group: 'com.fasterxml.jackson.module', version: '2.21.6') {
+                entry 'jackson-module-parameter-names'
+            }
+            dependency 'com.evanlennick:retry4j:0.15.0'
+            dependency 'com.google.code.findbugs:jsr305:3.0.1'
+            dependency 'com.google.guava:guava:32.1.3-jre'
+            dependency 'com.google.jimfs:jimfs:1.1'
+            dependency 'com.google.protobuf:protoc:3.16.1'
+            dependency 'com.hierynomus:sshj:0.21.1'
+            dependency 'com.jayway.jsonpath:json-path:2.7.0'
+            dependency 'com.lmax:disruptor:3.3.6'
+            dependencySet(group: 'com.querydsl', version: '5.0.0') {
+                entry 'querydsl-apt'
+                entry 'querydsl-core'
+                entry 'querydsl-jpa'
+            }
+            dependencySet(group: 'com.squareup.okhttp3', version: '4.9.3') {
+                entry 'logging-interceptor'
+                entry 'mockwebserver'
+                entry 'okhttp'
+                entry 'okhttp-urlconnection'
+            }
+            dependency 'io.fabric8:mockwebserver:0.1.8'
+            dependency 'io.fabric8:kubernetes-model-core:5.12.2'
+
+            dependency 'de.grundid.opendatalab:geojson-jackson:1.8'
+            dependencySet(group: 'info.cukes', version: '1.2.5') {
+                entry 'cucumber-java8'
+                entry 'cucumber-junit'
+                entry 'cucumber-picocontainer'
+            }
+            dependencySet(group: 'io.grpc', version: '1.68.1') {
+                entry 'grpc-netty'
+                entry 'grpc-protobuf'
+                entry 'grpc-stub'
+                entry 'protoc-gen-grpc-java'
+                entry 'grpc-inprocess'
+            }
+            dependencySet(group: 'io.kubernetes', version: '25.0.0-legacy') {
+                entry 'client-java'
+            }
+            dependency 'io.netty:netty-tcnative-boringssl-static:2.0.61.Final'
+            dependency 'it.geosolutions:geoserver-manager:1.7.0'
+            dependency 'javax.cache:cache-api:1.1.1'
+            dependency 'javax.servlet:javax.servlet-api:4.0.1'
+            dependency 'junit:junit:4.13.2'
+            dependency 'org.xmlunit:xmlunit-core:2.9.1'
+            dependency 'org.xmlunit:xmlunit-matchers:2.9.1'
+            dependency 'org.skyscreamer:jsonassert:1.5.1'
+            dependency 'org.apache.commons:commons-lang3:3.12.0'
+            dependency 'org.apache.commons:commons-text:1.10.0'
+            dependency 'org.apache.commons:commons-compress:1.26.0'
+            dependency 'org.apache.logging.log4j:log4j-jul:2.25.4'
+            dependency 'org.jsoup:jsoup:1.14.2'
+            dependency 'org.apache.httpcomponents:httpclient:4.5.14'
+            dependency 'org.aspectj:aspectjweaver:1.9.7'
+            dependency 'org.awaitility:awaitility:4.2.0'
+            dependency 'org.codehaus.woodstox:woodstox-core-asl:4.4.1'
+            dependency 'org.ehcache:ehcache:3.10.8'
+            dependency 'org.flywaydb:flyway-core:8.5.13'
+            dependencySet(group: 'org.geotools', version: '26.0') {
+                // project(':third-party:java:jai_core') must be manually included
+                entry('gt-epsg-extension') { exclude 'javax.media:jai_core' }
+                entry('gt-epsg-hsql') { exclude 'javax.media:jai_core' }
+                entry('gt-geojson') { exclude 'javax.media:jai_core' }
+                entry('gt-geotiff') { exclude 'javax.media:jai_core' }
+                entry('gt-main') { exclude 'javax.media:jai_core' }
+                entry('gt-referencing') { exclude 'javax.media:jai_core' }
+                entry('gt-shapefile') { exclude 'javax.media:jai_core' }
+            }
+            dependency 'org.locationtech.jts:jts-core:1.18.2'
+            dependency 'org.hamcrest:hamcrest-junit:2.0.0.0'
+            dependencySet(group: 'org.hibernate', version: '5.6.15.Final') {
+                entry 'hibernate-core'
+                entry 'hibernate-entitymanager'
+            }
+            dependency 'javax.persistence:javax.persistence-api:2.2'
+            dependency 'org.hsqldb:hsqldb:2.5.2'
+            dependency 'org.jooq:jool:0.9.12'
+            dependency 'io.github.lognet:grpc-spring-boot-starter:4.1.0'
+            dependency 'org.mockito:mockito-core:4.5.1'
+            dependency 'net.bytebuddy:byte-buddy:1.12.23'
+            dependency 'org.geoserver:gs-main:2.25.3'
+            dependency 'javax.annotation:javax.annotation-api:1.3.2'
+            dependency 'org.keycloak:keycloak-admin-client:19.0.3'
+            dependency 'org.jboss.resteasy:resteasy-jaxrs:3.15.3.Final'
+            dependency 'org.jboss.resteasy:resteasy-client:3.14.0.Final'
+            dependency 'org.jboss.resteasy:resteasy-jackson2-provider:3.1.4.Final'
+            dependency 'commons-codec:commons-codec:1.13'
+            dependency 'javax.persistence:javax.persistence-api:2.2'
+            dependency 'com.github.docker-java:docker-java:3.3.6'
+
+            // these dependencies' versions override the ones imported by the corresponding libraries
+            // marked as comments beside them, to fix different CVEs
+            dependency 'org.yaml:snakeyaml:2.0'// org.springframework.boot
+            dependency 'com.fasterxml.jackson:jackson-bom:2.21.6' // com.fasterxml.jackson.core
+            dependency 'io.airlift:aircompressor:2.0.3'
+            dependency 'io.netty:netty-codec:4.1.137.Final' // io.grpc:grpc-netty, io.kubernetes:client-java:25.0.0-legacy
+            dependency 'io.netty:netty-codec-http:4.1.137.Final' // io.grpc:grpc-netty, io.kubernetes:client-java:25.0.0-legacy
+            dependency 'io.netty:netty-codec-http2:4.1.137.Final' // io.grpc:grpc-netty, io.kubernetes:client-java:25.0.0-legacy
+            dependency 'io.netty:netty-common:4.1.137.Final' // io.grpc:grpc-netty, io.kubernetes:client-java:25.0.0-legacy
+            dependency 'io.netty:netty-handler:4.1.137.Final' // io.grpc:grpc-netty, io.kubernetes:client-java:25.0.0-legacy
+            dependency 'io.netty:netty-handler-proxy:4.1.137.Final' // io.grpc:grpc-netty, io.kubernetes:client-java:25.0.0-legacy
+            dependency 'io.netty:netty-transport-native-epoll:4.2.13.Final' // io.grpc:grpc-netty, io.kubernetes:client-java:25.0.0-legacy
+            dependency 'com.nimbusds:nimbus-jose-jwt:10.9' // io.kubernetes:client-java:25.0.0-legacy
+            dependency 'net.minidev:json-smart:2.4.11' // io.kubernetes:client-java:25.0.0-legacy
+            dependency 'com.sun.mail:jakarta.mail:1.6.8' // org.springframework.boot:2.7.18 (spring-boot-starter-mail)
+            dependency 'io.micrometer:micrometer-core:1.16.6' // org.springframework.boot:spring-boot-starter-actuator:2.7.18
+            dependency 'io.undertow:undertow-core:2.2.39.Final' // org.springframework.boot:spring-boot-starter-undertow
+            dependency 'org.postgresql:postgresql:42.7.12'
+            dependency 'org.jacoco:org.jacoco.ant:0.8.9'
+            dependency 'org.projectlombok:lombok:1.18.30'
+            dependency 'org.seleniumhq.selenium:selenium-java:4.1.4'
+            dependency 'org.apache.activemq:activemq-pool:5.16.8'
+            dependencySet(group: 'org.springframework.boot', version: '2.7.18') {
+                entry 'spring-boot'
+                entry 'spring-boot-autoconfigure'
+                entry 'spring-boot-configuration-processor'
+                entry('spring-boot-starter') { exclude 'org.springframework.boot:spring-boot-starter-logging' }
+                entry 'spring-boot-starter-actuator'
+                entry 'spring-boot-starter-validation'
+                entry 'spring-boot-starter-cache'
+                entry 'spring-boot-starter-data-rest'
+                entry 'spring-boot-starter-log4j2'
+                entry 'spring-boot-starter-jdbc'
+                entry 'spring-boot-starter-test'
+                entry 'spring-boot-starter-undertow'
+                entry 'spring-boot-starter-activemq'
+                entry 'spring-boot-starter-mail'
+                entry('spring-boot-starter-web') { exclude 'org.springframework.boot:spring-boot-starter-tomcat' }
+                entry('spring-boot-starter-data-jpa') { exclude 'org.apache.tomcat:tomcat-jdbc' }
+                entry 'spring-boot-starter-hateoas'
+                entry 'spring-boot-starter-quartz'
+            }
+            dependency 'org.apache.activemq:activemq-client:5.16.8'
+            dependency 'org.apache.activemq:activemq-openwire-legacy:5.16.8'
+            dependency 'org.springframework.hateoas:spring-hateoas:1.5.6'
+            dependency 'org.springframework.retry:spring-retry:1.3.4'
+            dependency 'org.snakeyaml:snakeyaml-engine:2.6'
+            dependency 'com.cgi.eoss.cwl_v1_2:cwl_v1_2:0.0.1'
+            dependencySet(group: 'org.testcontainers', version: '1.4.2') {
+                entry 'selenium'
+                entry 'testcontainers'
+            }
+        }
+    }
+    configurations.all {
+        resolutionStrategy.eachDependency { DependencyResolveDetails details ->
+            if (details.requested.group == 'org.apache.logging.log4j') {
+                details.useVersion '2.25.4'
+            }
+            if (details.requested.group == "org.springframework" && details.requested.name == "spring-web") {
+                details.useVersion '5.3.36'
+            }
+            if (details.requested.group == "org.springframework.security" && (details.requested.name == "spring-security-core" || details.requested.name == "spring-security-web")) {
+                details.useVersion '5.7.13'
+            }
+            if (details.requested.group == "org.jboss.xnio") {
+                details.useVersion '3.8.15.Final'  // org.springframework.boot:spring-boot-starter-undertow CVE
+            }
+        }
+    }
+
+}
+
+subprojects {
+    afterEvaluate { project ->
+        if (!project.sonarqube.skipProject) {
+            sonarqube {
+                String regex = "(.*)/(.*)"
+                String projectKey = project.name.replaceAll(regex, "\$1:\$2")
+                String sonarModuleKey = rootProject.group + ':' + rootProject.name + ':' + projectKey
+
+                properties {
+                    property 'sonar.coverage.jacoco.xmlreportPaths', "${project.buildDir}/jacoco/test/*.xml, ${rootProject.buildDir}/jacoco/test/*.xml"
+                    property "sonar.moduleKey", sonarModuleKey
+                }
+            }
+        }
+    }
+    tasks.withType(Test) {
+        useJUnit()
+
+        beforeTest { descriptor ->
+            logger.lifecycle("${descriptor.className}.${descriptor.name}: STARTED")
+        }
+
+        afterTest { descriptor, result ->
+            logger.lifecycle("${descriptor.className}.${descriptor.name}: ${result.resultType}")
+        }
+    }
+
+}
+
+def depVersions = [
+        // Build plugin versions
+        clientDependenciesPlugin     : '1.4.0',
+        dependencyManagementPlugin   : '1.1.2',
+        osDetectorPlugin             : '1.4.0',
+        osPackagePlugin              : '8.6.3',
+        protobufPlugin               : '0.8.12',
+        shadowPlugin                 : '7.1.2',
+        sshPlugin                    : '2.9.0',
+        springBootPlugin             : '2.7.18',
+        dockerPlugin                 : '6.0.0'
+]
+
+ext.pl = [
+        clientDependencies     : 'gradle.plugin.com.craigburke.gradle:client-dependencies:' + depVersions.clientDependenciesPlugin,
+        dependencyManagement   : 'io.spring.gradle:dependency-management-plugin:' + depVersions.dependencyManagementPlugin,
+        osPackage              : 'com.netflix.nebula:gradle-ospackage-plugin:' + depVersions.osPackagePlugin,
+        protobuf               : 'com.google.protobuf:protobuf-gradle-plugin:' + depVersions.protobufPlugin,
+        shadow                 : 'gradle.plugin.com.github.johnrengelman:shadow:' + depVersions.shadowPlugin,
+        springBoot             : 'org.springframework.boot:spring-boot-gradle-plugin:' + depVersions.springBootPlugin,
+        osDetector             : 'com.google.gradle:osdetector-gradle-plugin:' + depVersions.osDetectorPlugin,
+        ssh                    : 'org.hidetake:gradle-ssh-plugin:' + depVersions.sshPlugin,
+        docker				   : 'com.bmuschko:gradle-docker-plugin:' + depVersions.dockerPlugin
+]
+
+buildscript {
+    repositories {
+        maven {
+            url project.hasProperty('gradlePluginPortalUrl') ? gradlePluginPortalUrl : 'https://plugins.gradle.org/m2'
+        }
+    }
+    dependencies {
+        classpath 'org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:3.0'
+        classpath 'com.github.ben-manes:gradle-versions-plugin:0.30.0'
+        classpath 'io.spring.gradle:dependency-management-plugin:1.1.2'
+        classpath 'org.hidetake:gradle-ssh-plugin:2.9.0'
+    }
+}
+
+apply plugin: 'jacoco'
+apply plugin: 'org.sonarqube'
+apply plugin: 'com.github.ben-manes.versions'
+
+ext.snapshotRpmQualifier = System.getenv("BUILD_NUMBER") == null ? LocalDateTime.now().format(DateTimeFormatter.ofPattern('yyyyMMddHHmmss')) : System.getenv("BUILD_NUMBER")
+
+def getRpmVersion(version) {
+    return [
+            version: version.endsWith('-SNAPSHOT') ? version.toString().split('-')[0] : version,
+            release: version.endsWith('-SNAPSHOT') ? "SNAPSHOT${snapshotRpmQualifier}" : '1'
+    ]
+}
+
+task aggregateCoverage(type: JacocoMerge) {
+    def jacocoReports = []
+    doFirst {
+        subprojects.each { p ->
+            def coverageFileLocation = "$p.buildDir/jacoco/test/*.xml"
+            if (new File(coverageFileLocation).exists()) {
+                jacocoReports.add(file(coverageFileLocation))
+            }
+        }
+    }
+    executionData = files(jacocoReports)
+}
+
+task buildDockerImage {
+    subprojects.each { p ->
+        if (p.tasks.findByName('buildDockerImage')) {
+            dependsOn("${it.name}:buildDockerImage")
+        }
+    }
+}
+
+task pushDockerImage {
+    subprojects.each { p ->
+        if (p.tasks.findByName('pushDockerImage')) {
+            dependsOn("${it.name}:pushDockerImage")
+        }
+    }
+}
+
+if (System.env.TRAVIS == 'true') {
+    allprojects {
+        tasks.withType(Test) {
+            // containers (currently) have 2 dedicated cores and 4GB of memory
+            maxParallelForks = 2
+            minHeapSize = '128m'
+        }
+    }
+}
