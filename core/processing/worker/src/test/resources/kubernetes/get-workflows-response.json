@@ -69,10 +69,10 @@
                 "entrypoint": "workflowTemplate",
                 "imagePullSecrets": [
                     {
-                        "name": "cgi-harbor"
+                        "name": "secret-one"
                     },
                     {
-                        "name": "platform-harbor"
+                        "name": "secret-two"
                     }
                 ],
                 "templates": [
@@ -159,7 +159,7 @@
                                     "value": "{{inputs.parameters.input-basepath}}/tmp"
                                 }
                             ],
-                            "image": "core.harbor.dev.eoss-cloud.it/com.cgi.eoss.platform/input-downloader:1.23.1-SNAPSHOT",
+                            "image": "com.cgi.eoss.platform/input-downloader-core:v1",
                             "name": "",
                             "resources": {},
                             "volumeMounts": [
@@ -231,7 +231,7 @@
                                     "value": "{{inputs.parameters.output-basepath}}/tmp"
                                 }
                             ],
-                            "image": "core.harbor.dev.eoss-cloud.it/com.cgi.eoss.platform/output-uploader:1.23.1-SNAPSHOT",
+                            "image": "com.cgi.eoss.platform/output-uploader-core:v1",
                             "name": "",
                             "resources": {},
                             "volumeMounts": [

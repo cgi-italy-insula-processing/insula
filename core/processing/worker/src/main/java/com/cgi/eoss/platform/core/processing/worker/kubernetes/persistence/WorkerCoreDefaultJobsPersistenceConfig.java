@@ -13,9 +13,7 @@ import javax.sql.DataSource;
 import java.util.Map;
 
 /**
- * Provides the single-tenant persistence infrastructure for the Kubernetes worker jobs.
- * It is activated only when multi-tenancy is disabled, that is when the {@code platform.tenants.enabled} property is
- * set to {@code false} or is not defined at all.
+ * Provides core persistence infrastructure for the Kubernetes worker jobs.
  */
 @Configuration
 public class WorkerCoreDefaultJobsPersistenceConfig {

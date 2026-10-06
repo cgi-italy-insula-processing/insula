@@ -7,7 +7,7 @@ import java.nio.file.Path;
 import java.util.Map;
 
 /**
- * Class that triggers the execution of the application when tenancy support is disabled.
+ * Class that triggers the execution of the output uploader application.
  */
 @AllArgsConstructor
 public class DefaultOutputUploaderRunner implements OutputUploaderRunner {

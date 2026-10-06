@@ -6,7 +6,7 @@ buildscript {
 }
 
 group 'com.cgi.eoss.platform.core'
-version '1.47.1-SNAPSHOT'
+version '1.48.0'
 
 apply plugin: 'java'
 apply plugin: 'jacoco'
@@ -38,34 +38,29 @@ dependencies {
     implementation project(':core:processing:server:persistence')
     implementation project(':core:processing:server:orchestrator')
 
-    implementation(
-            'com.fasterxml.jackson.datatype:jackson-datatype-guava',
-            'com.fasterxml.jackson.datatype:jackson-datatype-hibernate5',
-            'com.fasterxml.jackson.datatype:jackson-datatype-jdk8',
-            'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
-    )
+    implementation 'com.querydsl:querydsl-jpa'
 
-    implementation(
-            'org.springframework:spring-context',
-            'org.springframework:spring-webmvc',
-            'org.springframework.boot:spring-boot-autoconfigure',
-            'org.springframework.boot:spring-boot-starter-actuator',
-            'org.springframework.boot:spring-boot-starter-log4j2',
-            'org.springframework.boot:spring-boot-starter-undertow',
-            'org.springframework.boot:spring-boot-starter-hateoas',
-            'org.springframework.security:spring-security-config',
-            'org.springframework.security:spring-security-web',
-            'org.springframework.boot:spring-boot-starter-data-rest',
-            'org.springframework.data:spring-data-rest-hal-explorer'
-    )
+    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-guava'
+    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-hibernate5'
+    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jdk8'
+    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
 
-    testImplementation (
-            'org.springframework:spring-test',
-            'org.springframework.boot:spring-boot-starter-test'
-    )
+    implementation 'org.springframework:spring-webmvc'
+    implementation 'org.springframework.boot:spring-boot-autoconfigure'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation 'org.springframework.boot:spring-boot-starter-log4j2'
+    implementation 'org.springframework.boot:spring-boot-starter-undertow'
+    implementation 'org.springframework.boot:spring-boot-starter-hateoas'
+    implementation 'org.springframework.security:spring-security-config'
+    implementation 'org.springframework.security:spring-security-web'
+    implementation 'org.springframework.boot:spring-boot-starter-data-rest'
+    implementation 'org.springframework.data:spring-data-rest-hal-explorer'
+
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
     testImplementation 'com.squareup.okhttp3:mockwebserver'
     testImplementation 'org.awaitility:awaitility'
+
     testCompileOnly 'org.projectlombok:lombok'
     testAnnotationProcessor('org.projectlombok:lombok')
 
@@ -76,9 +71,7 @@ dependencies {
     testImplementation project(path: ':core:testutils', configuration: 'testClasses')
     testImplementation project(path: ':core:processing:rpc')
 
-//  TODO: It should not be necessary to declare these items
     testRuntimeOnly 'org.hsqldb:hsqldb'
-    implementation 'com.querydsl:querydsl-jpa'
 }
 
 bootJar {

@@ -1,16 +1,9 @@
 group 'com.cgi.eoss.platform.core'
-version '1.47.1-SNAPSHOT'
+version '1.48.0'
 
 apply plugin: 'java'
 apply plugin: 'java-library'
 apply plugin: 'jacoco'
-apply plugin: 'eclipse'
-
-eclipse {
-  project {
-    name = 'core-testutils'
-  }
-}
 
 configurations {
     testClasses {
@@ -46,8 +39,8 @@ dependencies {
     testImplementation 'org.hamcrest:hamcrest-junit'
     testImplementation 'com.squareup.okhttp3:mockwebserver'
     testImplementation 'org.mockito:mockito-core'
-    testImplementation('org.xmlunit:xmlunit-core',
-            'org.xmlunit:xmlunit-matchers')
+    testImplementation 'org.xmlunit:xmlunit-core'
+    testImplementation 'org.xmlunit:xmlunit-matchers'
 
     testCompileOnly 'org.projectlombok:lombok'
     testAnnotationProcessor('org.projectlombok:lombok')
@@ -70,19 +63,3 @@ test {
     finalizedBy jacocoTestReport
 }
 
-jacoco {
-    toolVersion = "0.8.9"
-    reportsDir = file("$buildDir/jacoco")
-}
-
-jacocoTestReport {
-    dependsOn test
-    reports {
-      xml.enabled true
-      csv.enabled false
-    }
-}
-
-test {
-    finalizedBy jacocoTestReport
-}

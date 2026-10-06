@@ -1,5 +1,5 @@
 group 'com.cgi.eoss.platform.core'
-version '1.47.1-SNAPSHOT'
+version '1.48.0'
 
 apply plugin: 'java'
 apply plugin: 'java-library'
@@ -64,17 +64,15 @@ dependencies {
     implementation 'com.querydsl:querydsl-jpa'
     implementation 'org.flywaydb:flyway-core'
     implementation 'org.springframework.boot:spring-boot-starter-log4j2'
-    implementation('org.springframework.boot:spring-boot',
-            'org.springframework.boot:spring-boot-autoconfigure')
+    implementation 'org.springframework.boot:spring-boot'
+    implementation 'org.springframework.boot:spring-boot-autoconfigure'
 
-    //  TODO: It should not be necessary to declare these items
     runtimeOnly 'org.postgresql:postgresql'
 
     testCompileOnly 'org.projectlombok:lombok'
     testAnnotationProcessor 'org.projectlombok:lombok'
 
     testImplementation 'junit:junit'
-    testImplementation 'org.hamcrest:hamcrest-junit'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
     testImplementation project(path: ':core:processing:server:model', configuration: 'testClasses')

@@ -2,6 +2,7 @@ package com.cgi.eoss.platform.core.processing.server.persistence;
 
 import com.cgi.eoss.platform.core.processing.server.persistence.service.ProcessingCoreDataInitializationManagedService;
 import com.cgi.eoss.platform.core.processing.server.persistence.service.ProcessingCoreDataInitializationService;
+import com.zaxxer.hikari.HikariDataSource;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,14 @@ public class PersistenceCoreConfigIT {
     public void testContextLoads() {
         assertThat(applicationContext.getBean(ProcessingCoreDataInitializationManagedService.class)).isNotNull();
         assertThat(applicationContext.getBean(ProcessingCoreDataInitializationService.class)).isNotNull();
+    }
+
+    @Test
+    public void testDataSource_ProvidesTheDataSourceOfTheDatabaseDescribedByTheSpringDataSourceProperties() {
+        HikariDataSource dataSource = applicationContext.getBean("dataSource", HikariDataSource.class);
+
+        assertThat(dataSource.getJdbcUrl()).isEqualTo("jdbc:hsqldb:mem:platform");
+        assertThat(dataSource.isAutoCommit()).isFalse();
     }
 
 }

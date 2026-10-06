@@ -43,6 +43,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.context.PropertyPlaceholderAutoConfiguration;
+import org.springframework.boot.autoconfigure.jackson.JacksonAutoConfiguration;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -61,6 +62,7 @@ import java.util.concurrent.TimeUnit;
 @Configuration
 @EnableConfigurationProperties(CwlServiceProperties.class)
 @Import({
+        JacksonAutoConfiguration.class,
         OrchestratorCoreDefaultConfig.class,
         PropertyPlaceholderAutoConfiguration.class,
         JobResourceCoreConfig.class,
