@@ -1,5 +1,5 @@
 group = 'com.cgi.eoss.platform.core'
-version '1.47.1-SNAPSHOT'
+version '1.48.0'
 
 apply plugin: 'java'
 apply plugin: 'java-library'
@@ -56,25 +56,20 @@ dependencies {
     implementation project(':core:processing:rpc')
     implementation project(':core:queues')
 
-    api 'com.amazonaws:aws-java-sdk-s3'
+    implementation 'com.amazonaws:aws-java-sdk-s3'
     implementation 'com.squareup.okhttp3:okhttp'
     implementation 'com.squareup.okhttp3:logging-interceptor'
     implementation 'com.fasterxml.jackson.core:jackson-databind'
     implementation 'com.google.guava:guava'
     implementation 'org.apache.commons:commons-lang3'
     implementation 'org.locationtech.jts:jts-core'
-    implementation 'joda-time:joda-time:2.12.7'
     implementation 'org.springframework:spring-context'
     implementation 'org.springframework.boot:spring-boot'
     implementation 'org.springframework.boot:spring-boot-autoconfigure'
     implementation 'org.springframework.boot:spring-boot-starter-log4j2'
     implementation 'com.cgi.eoss.cwl_v1_2:cwl_v1_2'
-    implementation 'com.google.guava:guava'
     implementation 'org.snakeyaml:snakeyaml-engine'
-    implementation 'com.squareup.okhttp3:okhttp'
-    implementation 'com.squareup.okhttp3:logging-interceptor'
 
-    implementation 'org.apache.commons:commons-lang3'
     implementation 'org.apache.commons:commons-text'
     implementation 'org.apache.commons:commons-compress'
 
@@ -84,20 +79,18 @@ dependencies {
     testCompileOnly 'org.projectlombok:lombok'
     testAnnotationProcessor 'org.projectlombok:lombok'
 
-    testImplementation project(path: ':core:testutils', configuration: 'testClasses')
-    testImplementation project(path: ':core:processing:server:model', configuration: 'testClasses')
-
     testImplementation 'junit:junit'
-    testImplementation 'com.squareup.okhttp3:mockwebserver'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    testImplementation 'org.hsqldb:hsqldb'
     testImplementation 'com.squareup.okhttp3:mockwebserver'
     testImplementation 'com.google.jimfs:jimfs'
     testImplementation 'org.awaitility:awaitility'
+
     testImplementation project(path: ':core:queues', configuration: 'testClasses')
     testImplementation project(path: ':core:processing:server:model', configuration: 'testClasses')
     testImplementation project(path: ':core:processing:server:persistence', configuration: 'testClasses')
     testImplementation project(path: ':core:testutils', configuration: 'testClasses')
+
+    testRuntimeOnly 'org.hsqldb:hsqldb'
 
 }
 

@@ -2,7 +2,7 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 group 'com.cgi.eoss.platform'
-version '1.47.1-SNAPSHOT'
+version '1.48.0'
 
 // This pattern allows us to override the URLs from init.gradle or gradle.properties
 ext.mavenCentralUrl = project.hasProperty('mavenCentralUrl') ? mavenCentralUrl : 'https://jcenter.bintray.com'
@@ -51,22 +51,22 @@ allprojects {
 
             dependency 'commons-io:commons-io:2.15.1'
             dependency 'com.fasterxml.jackson.core:jackson-annotations:2.21'
-            dependencySet(group: 'com.fasterxml.jackson.core', version: '2.21.6') {
+            dependencySet(group: 'com.fasterxml.jackson.core', version: '2.21.7') {
                 entry 'jackson-core'
                 entry 'jackson-databind'
             }
-            dependencySet(group: 'com.fasterxml.jackson.dataformat', version: '2.21.6') {
+            dependencySet(group: 'com.fasterxml.jackson.dataformat', version: '2.21.7') {
                 entry 'jackson-dataformat-csv'
                 entry 'jackson-dataformat-xml'
                 entry 'jackson-dataformat-yaml'
             }
-            dependencySet(group: 'com.fasterxml.jackson.datatype', version: '2.21.6') {
+            dependencySet(group: 'com.fasterxml.jackson.datatype', version: '2.21.7') {
                 entry 'jackson-datatype-guava'
                 entry 'jackson-datatype-hibernate5'
                 entry 'jackson-datatype-jdk8'
                 entry 'jackson-datatype-jsr310'
             }
-            dependencySet(group: 'com.fasterxml.jackson.module', version: '2.21.6') {
+            dependencySet(group: 'com.fasterxml.jackson.module', version: '2.21.7') {
                 entry 'jackson-module-parameter-names'
             }
             dependency 'com.evanlennick:retry4j:0.15.0'
@@ -151,17 +151,17 @@ allprojects {
             dependency 'org.geoserver:gs-main:2.25.3'
             dependency 'javax.annotation:javax.annotation-api:1.3.2'
             dependency 'org.keycloak:keycloak-admin-client:19.0.3'
+            dependency 'com.tngtech.keycloakmock:mock:0.11.0'
             dependency 'org.jboss.resteasy:resteasy-jaxrs:3.15.3.Final'
             dependency 'org.jboss.resteasy:resteasy-client:3.14.0.Final'
             dependency 'org.jboss.resteasy:resteasy-jackson2-provider:3.1.4.Final'
             dependency 'commons-codec:commons-codec:1.13'
-            dependency 'javax.persistence:javax.persistence-api:2.2'
             dependency 'com.github.docker-java:docker-java:3.3.6'
 
             // these dependencies' versions override the ones imported by the corresponding libraries
             // marked as comments beside them, to fix different CVEs
             dependency 'org.yaml:snakeyaml:2.0'// org.springframework.boot
-            dependency 'com.fasterxml.jackson:jackson-bom:2.21.6' // com.fasterxml.jackson.core
+            dependency 'com.fasterxml.jackson:jackson-bom:2.21.7' // com.fasterxml.jackson.core
             dependency 'io.airlift:aircompressor:2.0.3'
             dependency 'io.netty:netty-codec:4.1.137.Final' // io.grpc:grpc-netty, io.kubernetes:client-java:25.0.0-legacy
             dependency 'io.netty:netty-codec-http:4.1.137.Final' // io.grpc:grpc-netty, io.kubernetes:client-java:25.0.0-legacy

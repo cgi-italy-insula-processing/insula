@@ -5,7 +5,7 @@ buildscript {
 }
 
 group 'com.cgi.eoss.platform.core'
-version '1.47.1-SNAPSHOT'
+version '1.48.0'
 
 apply plugin: 'java'
 apply plugin: 'java-library'

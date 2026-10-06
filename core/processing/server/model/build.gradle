@@ -1,5 +1,5 @@
 group 'com.cgi.eoss.platform.core'
-version '1.47.1-SNAPSHOT'
+version '1.48.0'
 
 apply plugin: 'java'
 apply plugin: 'java-library'
@@ -54,6 +54,12 @@ dependencies {
     annotationProcessor "javax.annotation:javax.annotation-api"
     annotationProcessor "org.projectlombok:lombok"
 
+    api 'com.querydsl:querydsl-core'
+    api 'com.fasterxml.jackson.core:jackson-annotations'
+    api 'com.fasterxml.jackson.core:jackson-databind'
+    api 'javax.persistence:javax.persistence-api'
+    api 'org.springframework.security:spring-security-core'
+
     compileOnly 'org.projectlombok:lombok'
 
     implementation 'com.google.guava:guava'
@@ -61,12 +67,6 @@ dependencies {
     implementation 'com.fasterxml.jackson.datatype:jackson-datatype-guava'
     implementation 'org.springframework.boot:spring-boot-starter-log4j2'
     implementation 'org.hibernate:hibernate-core'
-
-    api 'com.querydsl:querydsl-core'
-    api 'com.fasterxml.jackson.core:jackson-annotations'
-    api 'com.fasterxml.jackson.core:jackson-databind'
-    api 'javax.persistence:javax.persistence-api:2.2'
-    api 'org.springframework.security:spring-security-core'
 
     testCompileOnly 'org.projectlombok:lombok'
     testAnnotationProcessor 'org.projectlombok:lombok'

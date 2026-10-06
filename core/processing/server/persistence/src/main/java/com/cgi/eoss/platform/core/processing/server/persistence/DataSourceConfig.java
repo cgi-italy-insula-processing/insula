@@ -1,9 +1,7 @@
 package com.cgi.eoss.platform.core.processing.server.persistence;
 
 import javax.persistence.EntityManagerFactory;
-import javax.sql.DataSource;
 
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.flyway.FlywayAutoConfiguration;
 import org.springframework.boot.autoconfigure.flyway.FlywayProperties;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
@@ -37,14 +35,6 @@ public class DataSourceConfig {
     @ConfigurationProperties("spring.datasource")
     public DataSourceProperties dataSourceProperties() {
         return new DataSourceProperties();
-    }
-
-    @Bean
-    @Primary
-    @ConfigurationProperties("spring.datasource.hikari")
-    @ConditionalOnProperty(name = "platform.tenants.enabled", havingValue = "false", matchIfMissing = true)
-    public DataSource dataSource() {
-        return dataSourceProperties().initializeDataSourceBuilder().build();
     }
 
     @Bean
