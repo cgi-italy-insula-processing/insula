@@ -1,0 +1,149 @@
+name: Build
+
+on:
+  push:
+    branches: [main]
+    tags: ['v*']
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+env:
+  IMAGE_PREFIX: ghcr.io/${{ github.repository_owner }}/com.cgi.eoss.platform.core
+
+jobs:
+  build:
+    name: Build and test
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+      image-tag: ${{ steps.version.outputs.image-tag }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - uses: gradle/actions/wrapper-validation@3f5f9adaf7d9fecd50b5935e54106014257a94e6 # v6.4.0
+
+      - uses: actions/setup-java@de7274f081f381c8f8158605e0321c36c376e2e6 # v6.0.1
+        with:
+          distribution: temurin
+          java-version: '8'
+          cache: gradle
+
+      - name: Resolve version
+        id: version
+        run: |
+          version=$(./gradlew -q --no-daemon properties | sed -n 's/^version: //p')
+          [ -n "$version" ] || { echo "::error::cannot read the project version"; exit 1; }
+          if [ "$GITHUB_REF_TYPE" = tag ] && [ "$GITHUB_REF_NAME" != "v$version" ]; then
+            echo "::error::tag $GITHUB_REF_NAME does not match project version $version"
+            exit 1
+          fi
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+          echo "image-tag=$version-${GITHUB_SHA::8}" >> "$GITHUB_OUTPUT"
+
+      - name: Build and run all tests
+        run: ./gradlew build --no-daemon
+
+      - name: Upload test reports
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: test-reports
+          path: |
+            core/**/target/reports/tests/
+            core/**/target/test-results/
+          if-no-files-found: ignore
+          retention-days: 14
+
+      - name: Upload application jars
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: jars
+          path: core/processing/**/target/libs/*-bin.jar
+          if-no-files-found: error
+          retention-days: 14
+
+  image:
+    name: Image ${{ matrix.image }}
+    needs: build
+    if: github.event_name != 'pull_request' && (github.ref == 'refs/heads/main' || github.ref_type == 'tag')
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    permissions:
+      contents: read
+      packages: write
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - module: server/app
+            image: server-core
+          - module: worker
+            image: worker-core
+          - module: k8s-event-collector
+            image: k8s-event-collector-core
+          - module: input-downloader
+            image: input-downloader-core
+          - module: output-uploader
+            image: output-uploader-core
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: jars
+          path: core/processing
+
+      - name: Resolve build arguments
+        id: args
+        env:
+          MODULE: ${{ matrix.module }}
+          IMAGE: ${{ matrix.image }}
+          VERSION: ${{ needs.build.outputs.version }}
+        run: |
+          jar="target/libs/$IMAGE-$VERSION-bin.jar"
+          [ -f "core/processing/$MODULE/$jar" ] || { echo "::error::missing core/processing/$MODULE/$jar"; exit 1; }
+          base_image=$(sed -n 's/^container\.docker\.baseImage=//p' gradle.properties)
+          [ -n "$base_image" ] || { echo "::error::container.docker.baseImage not set in gradle.properties"; exit 1; }
+          echo "jar=$jar" >> "$GITHUB_OUTPUT"
+          echo "base-image=$base_image" >> "$GITHUB_OUTPUT"
+
+      - id: meta
+        uses: docker/metadata-action@dc802804100637a589fabce1cb79ff13a1411302 # v6.2.0
+        with:
+          images: ${{ env.IMAGE_PREFIX }}/${{ matrix.image }}
+          flavor: latest=false
+          tags: |
+            type=raw,value=${{ needs.build.outputs.image-tag }}
+            type=raw,value=${{ needs.build.outputs.version }},enable=${{ github.ref_type == 'tag' }}
+            type=raw,value=latest,enable=${{ github.ref_type == 'tag' }}
+
+      - uses: docker/setup-buildx-action@f87e5991a6d7451dcb8d9637bfbc97413f497069 # v4.4.1
+
+      - uses: docker/login-action@dbcb813823bdd20940b903addbd779551569679f # v4.6.0
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: docker/build-push-action@c3c9e263c25d99ce0380d002d59b67737d91b0dc # v7.4.0
+        with:
+          context: core/processing/${{ matrix.module }}
+          build-args: |
+            BASE_IMAGE=${{ steps.args.outputs.base-image }}
+            JAR_FILE=${{ steps.args.outputs.jar }}
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          push: true
